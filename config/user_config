@@ -1,0 +1,21 @@
+config serial_config
+	option serial_num '0'
+	option serial_baud '9600'
+	option serial_data '8'
+    option serial_parity 'None'
+    option serial_stop '1'
+    option sensor_manufacturer '0'
+	option sensor_type '0'
+    option sensor_number '0'
+    option sensor_mode '0'
+
+config protocol_config
+    option server_ip '106.14.119.1'
+    option server_port '28883'
+    option device_id 'AABBCCDD'
+    option publish_topic 'usr/device/data'
+    option subscribe_topic 'usr/device/data'
+    option server_user 'admin'
+    option server_password '123456'
+    option tcp_server_ip '106.14.119.1'
+    option tcp_server_port '50000'
