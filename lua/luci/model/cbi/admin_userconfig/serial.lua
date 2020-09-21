@@ -1,9 +1,8 @@
 #!/usr/bin/env lua
 
 local sys   = require "luci.sys"
-local zones = require "luci.sys.zoneinfo"
+-- local zones = require "luci.sys.zoneinfo"
 local fs    = require "nixio.fs"
-local conf  = require "luci.config"
 
 local m, s, o
 
@@ -23,7 +22,7 @@ s.addremove = false
 s:tab("serial", translate("Config Serial"))  
 
 o = s:taboption("serial", ListValue, "serial_num", translate("Serial NUM:"))
-o.default = 0
+o.default = 1
 o.datatype = "uinteger"
 o:value(0, translate("ttyS0"))
 o:value(1, translate("ttyS1"))
@@ -63,40 +62,50 @@ o = s:taboption("serial", ListValue, "serial_stop", translate("Serial STOP:"))
 o.default = 0
 o.datatype = "uinteger"
 o:value(0, translate("1"))
-o:value(1, translate("1.5"))
-o:value(2, translate("2"))
+o:value(1, translate("2"))
 
-o = s:taboption("serial", ListValue, "sensor_manufacturer", translate("Sensor manufacturer:"))
-o.default = 0
-o.datatype = "uinteger"
-o:value(0, translate("beisi"))
-o:value(1, translate("1.5"))
-o:value(2, translate("2"))
+o = s:taboption("serial", Value, "sensor_manufacturer", translate("Sensor manufacturer:"))
+o.datatype = "string"
 
-o = s:taboption("serial", ListValue, "sensor_type", translate("Sensor typefacturer:"))
-o.default = 0
-o.datatype = "uinteger"
-o:value(0, translate("DS18b20"))
-o:value(1, translate("1.5"))
-o:value(2, translate("2"))
+-- function o.write(self, section, value)
+-- 	Value.write(self, section, value)
+-- 	sys.string(value)
+-- end
 
-o = s:taboption("serial", ListValue, "sensor_number", translate("Sensor number:"))
-o.default = 0
-o.datatype = "uinteger"
-o:value(0, translate("beisi001"))
-o:value(1, translate("1.5"))
-o:value(2, translate("2"))
+
+o = s:taboption("serial", Value, "sensor_type", translate("Sensor type:"))
+o.datatype = "string"
+
+-- function o.write(self, section, value)
+-- 	Value.write(self, section, value)
+-- 	sys.string(value)
+-- end
+
+
+o = s:taboption("serial", Value, "sensor_number", translate("Sensor number:"))
+o.datatype = "string"
+
+-- function o.write(self, section, value)
+-- 	Value.write(self, section, value)
+-- 	sys.string(value)
+-- end
+-- o = s:taboption("serial", ListValue, "sensor_number", translate("Sensor number:"))
+-- o.default = 0
+-- o.datatype = "uinteger"
+-- o:value(0, translate("beisi001"))
+-- o:value(1, translate("1.5"))
+-- o:value(2, translate("2"))
 
 o = s:taboption("serial", ListValue, "sensor_mode", translate("Sensor Mode:"))
 o.default = 0
 o.datatype = "uinteger"
 o:value(0, translate("DTU"))
-o:value(1, translate("1.5"))
-o:value(2, translate("2"))
+o:value(1, translate("GROUP"))
 
+-- 通过如下的代码判断是否点击了“应用”按钮： 如果点击了，就执行if里面的语句
 local apply = luci.http.formvalue("cbi.apply")
 if apply then
-    io.popen("/etc/init.d/user_config restart")
+    io.popen("lua /usr/local/gateway/config_convert_json.lua")
 end
 
 return m
